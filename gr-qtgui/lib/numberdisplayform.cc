@@ -35,29 +35,18 @@ NumberDisplayForm::NumberDisplayForm(int nplots, gr::qtgui::graph_t type, QWidge
         d_indicator.push_back(new QwtThermo());
         d_indicator[i]->setScale(-1, 1);
 
-#if QWT_VERSION < 0x060100
-#else
         d_indicator[i]->setOriginMode(QwtThermo::OriginCustom);
         d_indicator[i]->setOrigin(0.0);
-#endif /* if QWT_VERSION < 0x060100 */
 
         switch (type) {
         case (gr::qtgui::NUM_GRAPH_HORIZ):
-#if QWT_VERSION < 0x060100
-            d_indicator[i]->setOrientation(Qt::Horizontal, QwtThermo::BottomScale);
-#else
             d_indicator[i]->setOrientation(Qt::Horizontal);
-#endif /* if QWT_VERSION < 0x060100 */
             d_layout->addWidget(d_label[i], 2 * i, 0);
             d_layout->addWidget(d_text_box[i], 2 * i, 1);
             d_layout->addWidget(d_indicator[i], 2 * i + 1, 1);
             break;
         case (gr::qtgui::NUM_GRAPH_VERT):
-#if QWT_VERSION < 0x060100
-            d_indicator[i]->setOrientation(Qt::Vertical, QwtThermo::LeftScale);
-#else
             d_indicator[i]->setOrientation(Qt::Vertical);
-#endif /* if QWT_VERSION < 0x060100 */
             d_layout->addWidget(d_label[i], 0, i);
             d_layout->addWidget(d_text_box[i], 1, i);
             d_layout->addWidget(d_indicator[i], 2, i);
@@ -268,22 +257,14 @@ void NumberDisplayForm::setGraphType(const gr::qtgui::graph_t type)
     for (unsigned int i = 0; i < d_nplots; ++i) {
         switch (d_graph_type) {
         case (gr::qtgui::NUM_GRAPH_HORIZ):
-#if QWT_VERSION < 0x060100
-            d_indicator[i]->setOrientation(Qt::Horizontal, QwtThermo::BottomScale);
-#else
             d_indicator[i]->setOrientation(Qt::Horizontal);
-#endif /* if QWT_VERSION < 0x060100 */
             d_indicator[i]->setVisible(true);
             d_layout->addWidget(d_label[i], 2 * i + off, 0);
             d_layout->addWidget(d_text_box[i], 2 * i + off, 1);
             d_layout->addWidget(d_indicator[i], 2 * i + 1 + off, 1);
             break;
         case (gr::qtgui::NUM_GRAPH_VERT):
-#if QWT_VERSION < 0x060100
-            d_indicator[i]->setOrientation(Qt::Vertical, QwtThermo::LeftScale);
-#else
             d_indicator[i]->setOrientation(Qt::Vertical);
-#endif /* if QWT_VERSION < 0x060100 */
             d_indicator[i]->setVisible(true);
             d_layout->addWidget(d_label[i], 0 + off, i);
             d_layout->addWidget(d_text_box[i], 1 + off, i);
@@ -338,9 +319,6 @@ void NumberDisplayForm::setScale(unsigned int which, int min, int max)
     d_min[which] = min;
     d_max[which] = max;
     d_indicator[which]->setScale(min, max);
-#if QWT_VERSION < 0x060100
-    d_indicator[which]->setRange(min, max);
-#endif
 }
 
 void NumberDisplayForm::setScaleMin(unsigned int which, int min)

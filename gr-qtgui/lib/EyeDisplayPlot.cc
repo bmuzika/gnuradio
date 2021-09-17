@@ -22,11 +22,7 @@
 class EyeDisplayZoomer : public QwtPlotZoomer, public TimePrecisionClass
 {
 public:
-#if QWT_VERSION < 0x060100
-    EyeDisplayZoomer(QwtPlotCanvas* canvas, const unsigned int timePrecision)
-#else  /* QWT_VERSION < 0x060100 */
     EyeDisplayZoomer(QWidget* canvas, const unsigned int timePrecision)
-#endif /* QWT_VERSION < 0x060100 */
         : QwtPlotZoomer(canvas), TimePrecisionClass(timePrecision), d_yUnitType("V")
     {
         setTrackerMode(QwtPicker::AlwaysOn);
@@ -376,13 +372,8 @@ void EyeDisplayPlot::legendEntryChecked(QwtPlotItem* plotItem, bool on)
 
 void EyeDisplayPlot::legendEntryChecked(const QVariant& plotItem, bool on, int index)
 {
-#if QWT_VERSION < 0x060100
-    std::runtime_error("EyeDisplayPlot::legendEntryChecked with QVariant not "
-                       "enabled in this version of QWT.");
-#else
     QwtPlotItem* p = infoToItem(plotItem);
     legendEntryChecked(p, on);
-#endif /* QWT_VERSION < 0x060100 */
 }
 
 void EyeDisplayPlot::_resetXAxisPoints()

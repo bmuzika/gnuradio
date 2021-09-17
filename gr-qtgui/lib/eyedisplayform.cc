@@ -486,80 +486,40 @@ std::string EyeDisplayForm::getTriggerTagKey() const { return d_trig_tag_key; }
 void EyeDisplayForm::notifyYAxisPlus()
 {
     for (unsigned int i = 0; i < d_nplots; ++i) {
-
-#if QWT_VERSION < 0x060100
-        QwtScaleDiv* ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
-        double range = ax->upperBound() - ax->lowerBound();
-        double step = range / 20.0;
-        getSinglePlot(i)->setYaxis(ax->lowerBound() + step, ax->upperBound() + step);
-
-#else
-
         QwtScaleDiv ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
         double range = ax.upperBound() - ax.lowerBound();
         double step = range / 20.0;
         getSinglePlot(i)->setYaxis(ax.lowerBound() + step, ax.upperBound() + step);
-#endif
     }
 }
 
 void EyeDisplayForm::notifyYAxisMinus()
 {
     for (unsigned int i = 0; i < d_nplots; ++i) {
-
-#if QWT_VERSION < 0x060100
-        QwtScaleDiv* ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
-        double range = ax->upperBound() - ax->lowerBound();
-        double step = range / 20.0;
-        getSinglePlot(i)->setYaxis(ax->lowerBound() - step, ax->upperBound() - step);
-
-#else
-
         QwtScaleDiv ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
         double range = ax.upperBound() - ax.lowerBound();
         double step = range / 20.0;
         getSinglePlot(i)->setYaxis(ax.lowerBound() - step, ax.upperBound() - step);
-#endif
     }
 }
 
 void EyeDisplayForm::notifyYRangePlus()
 {
     for (unsigned int i = 0; i < d_nplots; ++i) {
-
-#if QWT_VERSION < 0x060100
-        QwtScaleDiv* ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
-        double range = ax->upperBound() - ax->lowerBound();
-        double step = range / 20.0;
-        getSinglePlot(i)->setYaxis(ax->lowerBound() - step, ax->upperBound() + step);
-
-#else
-
         QwtScaleDiv ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
         double range = ax.upperBound() - ax.lowerBound();
         double step = range / 20.0;
         getSinglePlot(i)->setYaxis(ax.lowerBound() - step, ax.upperBound() + step);
-#endif
     }
 }
 
 void EyeDisplayForm::notifyYRangeMinus()
 {
     for (unsigned int i = 0; i < d_nplots; ++i) {
-
-#if QWT_VERSION < 0x060100
-        QwtScaleDiv* ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
-        double range = ax->upperBound() - ax->lowerBound();
-        double step = range / 20.0;
-        getSinglePlot(i)->setYaxis(ax->lowerBound() + step, ax->upperBound() - step);
-
-#else
-
         QwtScaleDiv ax = getSinglePlot(i)->axisScaleDiv(QwtPlot::yLeft);
         double range = ax.upperBound() - ax.lowerBound();
         double step = range / 20.0;
         getSinglePlot(i)->setYaxis(ax.lowerBound() + step, ax.upperBound() - step);
-#endif
     }
 }
 
@@ -588,15 +548,8 @@ void EyeDisplayForm::notifyTriggerSlope(const QString& slope)
 
 void EyeDisplayForm::notifyTriggerLevelPlus()
 {
-#if QWT_VERSION < 0x060100
-    QwtScaleDiv* ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::yLeft);
-    double range = ax->upperBound() - ax->lowerBound();
-
-#else
-
     QwtScaleDiv ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::yLeft);
     double range = ax.upperBound() - ax.lowerBound();
-#endif
 
     double step = range / 20.0;
     emit signalTriggerLevel(getTriggerLevel() + step);
@@ -604,15 +557,8 @@ void EyeDisplayForm::notifyTriggerLevelPlus()
 
 void EyeDisplayForm::notifyTriggerLevelMinus()
 {
-#if QWT_VERSION < 0x060100
-    QwtScaleDiv* ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::yLeft);
-    double range = ax->upperBound() - ax->lowerBound();
-
-#else
-
     QwtScaleDiv ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::yLeft);
     double range = ax.upperBound() - ax.lowerBound();
-#endif
 
     double step = range / 20.0;
     emit signalTriggerLevel(getTriggerLevel() - step);
@@ -620,15 +566,8 @@ void EyeDisplayForm::notifyTriggerLevelMinus()
 
 void EyeDisplayForm::notifyTriggerDelayPlus()
 {
-#if QWT_VERSION < 0x060100
-    QwtScaleDiv* ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::xBottom);
-    double range = ax->upperBound() - ax->lowerBound();
-
-#else
-
     QwtScaleDiv ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::xBottom);
     double range = ax.upperBound() - ax.lowerBound();
-#endif
 
     double step = range / (2 * d_sps);
     double trig = getTriggerDelay() + step / d_current_units;
@@ -640,15 +579,8 @@ void EyeDisplayForm::notifyTriggerDelayPlus()
 
 void EyeDisplayForm::notifyTriggerDelayMinus()
 {
-#if QWT_VERSION < 0x060100
-    QwtScaleDiv* ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::xBottom);
-    double range = ax->upperBound() - ax->lowerBound();
-
-#else
-
     QwtScaleDiv ax = getSinglePlot(0)->axisScaleDiv(QwtPlot::xBottom);
     double range = ax.upperBound() - ax.lowerBound();
-#endif
 
     double step = range / (2 * d_sps);
     double trig = getTriggerDelay() - step / d_current_units;

@@ -20,12 +20,8 @@
 #include <qwt_scale_draw.h>
 #include <QColor>
 
-#if QWT_VERSION < 0x060100
-#include <qwt_legend_item.h>
-#else /* QWT_VERSION < 0x060100 */
 #include <qwt_legend_data.h>
 #include <qwt_legend_label.h>
-#endif /* QWT_VERSION < 0x060100 */
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 namespace pt = boost::posix_time;
@@ -67,11 +63,7 @@ class WaterfallZoomer : public QwtPlotZoomer,
                         public FreqOffsetAndPrecisionClass
 {
 public:
-#if QWT_VERSION < 0x060100
-    WaterfallZoomer(QwtPlotCanvas* canvas, const unsigned int freqPrecision)
-#else  /* QWT_VERSION < 0x060100 */
     WaterfallZoomer(QWidget* canvas, const unsigned int freqPrecision)
-#endif /* QWT_VERSION < 0x060100 */
         : QwtPlotZoomer(canvas),
           TimeScaleData(),
           FreqOffsetAndPrecisionClass(freqPrecision)

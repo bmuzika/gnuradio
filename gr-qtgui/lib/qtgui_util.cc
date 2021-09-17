@@ -62,14 +62,7 @@ QwtPickerDblClickPointMachine::transition(const QwtEventPattern& eventPattern,
     return cmdList;
 }
 
-#if QWT_VERSION < 0x060100
-QwtDblClickPlotPicker::QwtDblClickPlotPicker(QwtPlotCanvas* canvas)
-#else  /* QWT_VERSION < 0x060100 */
-QwtDblClickPlotPicker::QwtDblClickPlotPicker(QWidget* canvas)
-#endif /* QWT_VERSION < 0x060100 */
-    : QwtPlotPicker(canvas)
-{
-}
+QwtDblClickPlotPicker::QwtDblClickPlotPicker(QWidget* canvas) : QwtPlotPicker(canvas) {}
 
 QwtDblClickPlotPicker::~QwtDblClickPlotPicker() {}
 

@@ -18,12 +18,8 @@
 #include <qwt_scale_draw.h>
 #include <QColor>
 
-#if QWT_VERSION < 0x060100
-#include <qwt_legend_item.h>
-#else /* QWT_VERSION < 0x060100 */
 #include <qwt_legend_data.h>
 #include <qwt_legend_label.h>
-#endif /* QWT_VERSION < 0x060100 */
 
 /***********************************************************************
  * Widget to provide mouse pointer coordinate text
@@ -31,11 +27,7 @@
 class VectorDisplayZoomer : public QwtPlotZoomer
 {
 public:
-#if QWT_VERSION < 0x060100
-    VectorDisplayZoomer(QwtPlotCanvas* canvas)
-#else  /* QWT_VERSION < 0x060100 */
     VectorDisplayZoomer(QWidget* canvas)
-#endif /* QWT_VERSION < 0x060100 */
         : QwtPlotZoomer(canvas), d_x_units(" "), d_y_units(" ")
     {
         setTrackerMode(QwtPicker::AlwaysOn);
@@ -174,20 +166,11 @@ VectorDisplayPlot::VectorDisplayPlot(int nplots, QWidget* parent)
     _resetXAxisPoints();
 
     // Turn off min/max hold plots in legend
-#if QWT_VERSION < 0x060100
-    QWidget* w;
-    QwtLegend* legendDisplay = legend();
-    w = legendDisplay->find(d_min_vec_plot_curve);
-    ((QwtLegendItem*)w)->setChecked(true);
-    w = legendDisplay->find(d_max_vec_plot_curve);
-    ((QwtLegendItem*)w)->setChecked(true);
-#else  /* QWT_VERSION < 0x060100 */
     QWidget* w;
     w = ((QwtLegend*)legend())->legendWidget(itemToInfo(d_min_vec_plot_curve));
     ((QwtLegendLabel*)w)->setChecked(true);
     w = ((QwtLegend*)legend())->legendWidget(itemToInfo(d_max_vec_plot_curve));
     ((QwtLegendLabel*)w)->setChecked(true);
-#endif /* QWT_VERSION < 0x060100 */
 
     replot();
 }

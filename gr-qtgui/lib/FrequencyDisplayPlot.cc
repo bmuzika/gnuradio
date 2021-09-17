@@ -24,11 +24,7 @@
 class FreqDisplayZoomer : public QwtPlotZoomer, public FreqOffsetAndPrecisionClass
 {
 public:
-#if QWT_VERSION < 0x060100
-    FreqDisplayZoomer(QwtPlotCanvas* canvas, const unsigned int freqPrecision)
-#else  /* QWT_VERSION < 0x060100 */
     FreqDisplayZoomer(QWidget* canvas, const unsigned int freqPrecision)
-#endif /* QWT_VERSION < 0x060100 */
         : QwtPlotZoomer(canvas), FreqOffsetAndPrecisionClass(freqPrecision)
     {
         setTrackerMode(QwtPicker::AlwaysOn);
@@ -175,16 +171,6 @@ FrequencyDisplayPlot::FrequencyDisplayPlot(int nplots, QWidget* parent)
     _resetXAxisPoints();
 
     // Turn off min/max hold plots in legend
-#if QWT_VERSION < 0x060100
-    QWidget* w;
-    w = legend()->find(d_min_fft_plot_curve);
-    ((QwtLegendItem*)w)->setChecked(true);
-    ((QwtLegendItem*)w)->setVisible(false);
-    w = legend()->find(d_max_fft_plot_curve);
-    ((QwtLegendItem*)w)->setChecked(true);
-    ((QwtLegendItem*)w)->setVisible(false);
-    legend()->setVisible(false);
-#else /* QWT_VERSION < 0x060100 */
     QWidget* w;
     w = ((QwtLegend*)legend())->legendWidget(itemToInfo(d_min_fft_plot_curve));
     ((QwtLegendLabel*)w)->setChecked(true);
@@ -193,8 +179,6 @@ FrequencyDisplayPlot::FrequencyDisplayPlot(int nplots, QWidget* parent)
     w = ((QwtLegend*)legend())->legendWidget(itemToInfo(d_max_fft_plot_curve));
     ((QwtLegendLabel*)w)->setChecked(true);
     ((QwtLegendLabel*)w)->setVisible(false);
-
-#endif /* QWT_VERSION < 0x060100 */
 
     d_trigger_line = new QwtPlotMarker();
     d_trigger_line->setLineStyle(QwtPlotMarker::HLine);

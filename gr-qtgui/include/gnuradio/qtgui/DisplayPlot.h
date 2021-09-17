@@ -36,12 +36,8 @@ typedef QwtInterval QwtDoubleInterval;
 typedef QList<QColor> QColorList;
 Q_DECLARE_METATYPE(QColorList)
 
-#if QWT_VERSION < 0x060100
-#include <qwt_legend_item.h>
-#else /* QWT_VERSION < 0x060100 */
 #include <qwt_legend_data.h>
 #include <qwt_legend_label.h>
-#endif /* QWT_VERSION < 0x060100 */
 
 /*!
  * \brief QWidget base plot to build QTGUI plotting tools.

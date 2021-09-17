@@ -29,11 +29,7 @@ QTGUI_API QString get_qt_style_sheet(QString filename);
 class QTGUI_API QwtDblClickPlotPicker : public QwtPlotPicker
 {
 public:
-#if QWT_VERSION < 0x060100
-    QwtDblClickPlotPicker(QwtPlotCanvas*);
-#else  /* QWT_VERSION < 0x060100 */
     QwtDblClickPlotPicker(QWidget*);
-#endif /* QWT_VERSION < 0x060100 */
 
     ~QwtDblClickPlotPicker() override;
 

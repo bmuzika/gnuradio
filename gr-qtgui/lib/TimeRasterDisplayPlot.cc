@@ -22,12 +22,8 @@
 #include <QColor>
 #include <cmath>
 
-#if QWT_VERSION < 0x060100
-#include <qwt_legend_item.h>
-#else /* QWT_VERSION < 0x060100 */
 #include <qwt_legend_data.h>
 #include <qwt_legend_label.h>
-#endif /* QWT_VERSION < 0x060100 */
 
 #include <boost/date_time/posix_time/posix_time.hpp>
 namespace pt = boost::posix_time;
@@ -244,16 +240,6 @@ class TimeRasterZoomer : public QwtPlotZoomer,
                          public TimeScaleData
 {
 public:
-#if QWT_VERSION < 0x060100
-    TimeRasterZoomer(QwtPlotCanvas* canvas,
-                     double rows,
-                     double cols,
-                     const unsigned int timePrecision,
-                     double x_start_value = 0.0,
-                     double x_end_value = 0.0,
-                     double y_start_value = 0.0,
-                     double y_end_value = 0.0)
-#else  /* QWT_VERSION < 0x060100 */
     TimeRasterZoomer(QWidget* canvas,
                      double rows,
                      double cols,
@@ -262,7 +248,6 @@ public:
                      double x_end_value = 0.0,
                      double y_start_value = 0.0,
                      double y_end_value = 0.0)
-#endif /* QWT_VERSION < 0x060100 */
         : QwtPlotZoomer(canvas),
           TimePrecisionClass(timePrecision),
           TimeScaleData(),
