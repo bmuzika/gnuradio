@@ -109,13 +109,8 @@ VectorDisplayPlot::VectorDisplayPlot(int nplots, QWidget* parent)
                                           QPen(default_colors[i]),
                                           QSize(7, 7));
 
-#if QWT_VERSION < 0x060000
-        d_plot_curve[i]->setRawData(d_xdata.data(), d_ydata[i].data(), d_numPoints);
-        d_plot_curve[i]->setSymbol(*symbol);
-#else
         d_plot_curve[i]->setRawSamples(d_xdata.data(), d_ydata[i].data(), d_numPoints);
         d_plot_curve[i]->setSymbol(symbol);
-#endif
         setLineColor(i, default_colors[i]);
     }
 
@@ -124,12 +119,8 @@ VectorDisplayPlot::VectorDisplayPlot(int nplots, QWidget* parent)
     d_min_vec_plot_curve->attach(this);
     const QColor default_min_fft_color = Qt::magenta;
     setMinVecColor(default_min_fft_color);
-#if QWT_VERSION < 0x060000
-    d_min_vec_plot_curve->setRawData(d_xdata.data(), d_min_vec_data.data(), d_numPoints);
-#else
     d_min_vec_plot_curve->setRawSamples(
         d_xdata.data(), d_min_vec_data.data(), d_numPoints);
-#endif
     d_min_vec_plot_curve->setVisible(false);
     d_min_vec_plot_curve->setZ(0);
 
@@ -137,12 +128,8 @@ VectorDisplayPlot::VectorDisplayPlot(int nplots, QWidget* parent)
     d_max_vec_plot_curve->attach(this);
     QColor default_max_fft_color = Qt::darkYellow;
     setMaxVecColor(default_max_fft_color);
-#if QWT_VERSION < 0x060000
-    d_max_vec_plot_curve->setRawData(d_xdata.data(), d_max_vec_data.data(), d_numPoints);
-#else
     d_max_vec_plot_curve->setRawSamples(
         d_xdata.data(), d_max_vec_data.data(), d_numPoints);
-#endif
     d_max_vec_plot_curve->setVisible(false);
     d_max_vec_plot_curve->setZ(0);
 
@@ -174,10 +161,6 @@ VectorDisplayPlot::VectorDisplayPlot(int nplots, QWidget* parent)
     d_ref_level = -HUGE_VAL;
 
     d_zoomer = new VectorDisplayZoomer(canvas());
-
-#if QWT_VERSION < 0x060000
-    d_zoomer->setSelectionFlags(QwtPicker::RectSelection | QwtPicker::DragSelection);
-#endif
 
     d_zoomer->setMousePattern(
         QwtEventPattern::MouseSelect2, Qt::RightButton, Qt::ControlModifier);
@@ -294,25 +277,13 @@ void VectorDisplayPlot::plotNewData(const std::vector<double*> dataPoints,
                 for (unsigned int i = 0; i < d_nplots; ++i) {
                     d_ydata[i].resize(d_numPoints);
 
-#if QWT_VERSION < 0x060000
-                    d_plot_curve[i]->setRawData(
-                        d_xdata.data(), d_ydata[i].data(), d_numPoints);
-#else
                     d_plot_curve[i]->setRawSamples(
                         d_xdata.data(), d_ydata[i].data(), d_numPoints);
-#endif
                 }
-#if QWT_VERSION < 0x060000
-                d_min_vec_plot_curve->setRawData(
-                    d_xdata.data(), d_min_vec_data.data(), d_numPoints);
-                d_max_vec_plot_curve->setRawData(
-                    d_xdata.data(), d_max_vec_data.data(), d_numPoints);
-#else
                 d_min_vec_plot_curve->setRawSamples(
                     d_xdata.data(), d_min_vec_data.data(), d_numPoints);
                 d_max_vec_plot_curve->setRawSamples(
                     d_xdata.data(), d_max_vec_data.data(), d_numPoints);
-#endif
                 _resetXAxisPoints();
                 clearMaxData();
                 clearMinData();

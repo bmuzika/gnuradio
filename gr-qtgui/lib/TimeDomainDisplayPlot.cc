@@ -80,10 +80,6 @@ TimeDomainDisplayPlot::TimeDomainDisplayPlot(int nplots, QWidget* parent)
 
     d_zoomer = new TimeDomainDisplayZoomer(canvas(), 0);
 
-#if QWT_VERSION < 0x060000
-    d_zoomer->setSelectionFlags(QwtPicker::RectSelection | QwtPicker::DragSelection);
-#endif
-
     d_zoomer->setMousePattern(
         QwtEventPattern::MouseSelect2, Qt::RightButton, Qt::ControlModifier);
     d_zoomer->setMousePattern(QwtEventPattern::MouseSelect3, Qt::RightButton);
@@ -130,13 +126,8 @@ TimeDomainDisplayPlot::TimeDomainDisplayPlot(int nplots, QWidget* parent)
         QwtSymbol* symbol = new QwtSymbol(
             QwtSymbol::NoSymbol, QBrush(colors[i]), QPen(colors[i]), QSize(7, 7));
 
-#if QWT_VERSION < 0x060000
-        d_plot_curve[i]->setRawData(d_xdata.data(), d_ydata[i].data(), d_numPoints);
-        d_plot_curve[i]->setSymbol(*symbol);
-#else
         d_plot_curve[i]->setRawSamples(d_xdata.data(), d_ydata[i].data(), d_numPoints);
         d_plot_curve[i]->setSymbol(symbol);
-#endif
     }
 
     d_sample_rate = 1;
@@ -183,13 +174,8 @@ void TimeDomainDisplayPlot::plotNewData(const std::vector<double*> dataPoints,
                 for (unsigned int i = 0; i < d_nplots; ++i) {
                     d_ydata[i].resize(d_numPoints);
 
-#if QWT_VERSION < 0x060000
-                    d_plot_curve[i]->setRawData(
-                        d_xdata.data(), d_ydata[i].data(), d_numPoints);
-#else
                     d_plot_curve[i]->setRawSamples(
                         d_xdata.data(), d_ydata[i].data(), d_numPoints);
-#endif
                 }
 
                 _resetXAxisPoints();
@@ -298,11 +284,7 @@ void TimeDomainDisplayPlot::plotNewData(const std::vector<double*> dataPoints,
                                 m->setLabelAlignment(Qt::AlignBottom);
                             }
 
-#if QWT_VERSION < 0x060000
-                            m->setSymbol(*sym);
-#else
                             m->setSymbol(sym);
-#endif
                             QwtText tag_label(s.str().c_str());
                             tag_label.setColor(getTagTextColor());
                             m->setLabel(tag_label);

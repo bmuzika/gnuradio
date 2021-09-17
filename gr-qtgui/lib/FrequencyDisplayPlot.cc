@@ -94,13 +94,8 @@ FrequencyDisplayPlot::FrequencyDisplayPlot(int nplots, QWidget* parent)
                                           QPen(default_colors[i]),
                                           QSize(7, 7));
 
-#if QWT_VERSION < 0x060000
-        d_plot_curve[i]->setRawData(d_xdata.data(), d_ydata[i].data(), d_numPoints);
-        d_plot_curve[i]->setSymbol(*symbol);
-#else
         d_plot_curve[i]->setRawSamples(d_xdata.data(), d_ydata[i].data(), d_numPoints);
         d_plot_curve[i]->setSymbol(symbol);
-#endif
         setLineColor(i, default_colors[i]);
     }
 
@@ -109,12 +104,8 @@ FrequencyDisplayPlot::FrequencyDisplayPlot(int nplots, QWidget* parent)
     d_min_fft_plot_curve->attach(this);
     const QColor default_min_fft_color = Qt::magenta;
     setMinFFTColor(default_min_fft_color);
-#if QWT_VERSION < 0x060000
-    d_min_fft_plot_curve->setRawData(d_xdata.data(), d_min_fft_data.data(), d_numPoints);
-#else
     d_min_fft_plot_curve->setRawSamples(
         d_xdata.data(), d_min_fft_data.data(), d_numPoints);
-#endif
     d_min_fft_plot_curve->setVisible(false);
     d_min_fft_plot_curve->setZ(0);
 
@@ -122,12 +113,8 @@ FrequencyDisplayPlot::FrequencyDisplayPlot(int nplots, QWidget* parent)
     d_max_fft_plot_curve->attach(this);
     QColor default_max_fft_color = Qt::darkYellow;
     setMaxFFTColor(default_max_fft_color);
-#if QWT_VERSION < 0x060000
-    d_max_fft_plot_curve->setRawData(d_xdata.data(), d_max_fft_data.data(), d_numPoints);
-#else
     d_max_fft_plot_curve->setRawSamples(
         d_xdata.data(), d_max_fft_data.data(), d_numPoints);
-#endif
     d_max_fft_plot_curve->setVisible(false);
     d_max_fft_plot_curve->setZ(0);
 
@@ -175,10 +162,6 @@ FrequencyDisplayPlot::FrequencyDisplayPlot(int nplots, QWidget* parent)
     d_noise_floor_amplitude = -HUGE_VAL;
 
     d_zoomer = new FreqDisplayZoomer(canvas(), 0);
-
-#if QWT_VERSION < 0x060000
-    d_zoomer->setSelectionFlags(QwtPicker::RectSelection | QwtPicker::DragSelection);
-#endif
 
     d_zoomer->setMousePattern(
         QwtEventPattern::MouseSelect2, Qt::RightButton, Qt::ControlModifier);
@@ -330,25 +313,13 @@ void FrequencyDisplayPlot::plotNewData(const std::vector<double*> dataPoints,
                 for (unsigned int i = 0; i < d_nplots; ++i) {
                     d_ydata[i].resize(d_numPoints);
 
-#if QWT_VERSION < 0x060000
-                    d_plot_curve[i]->setRawData(
-                        d_xdata.data(), d_ydata[i].data(), d_numPoints);
-#else
                     d_plot_curve[i]->setRawSamples(
                         d_xdata.data(), d_ydata[i].data(), d_numPoints);
-#endif
                 }
-#if QWT_VERSION < 0x060000
-                d_min_fft_plot_curve->setRawData(
-                    d_xdata.data(), d_min_fft_data.data(), d_numPoints);
-                d_max_fft_plot_curve->setRawData(
-                    d_xdata.data(), d_max_fft_data.data(), d_numPoints);
-#else
                 d_min_fft_plot_curve->setRawSamples(
                     d_xdata.data(), d_min_fft_data.data(), d_numPoints);
                 d_max_fft_plot_curve->setRawSamples(
                     d_xdata.data(), d_max_fft_data.data(), d_numPoints);
-#endif
                 _resetXAxisPoints();
                 clearMaxData();
                 clearMinData();
@@ -613,11 +584,7 @@ void FrequencyDisplayPlot::setMarkerPeakAmplitudeColor(QColor c)
     symbol.setSize(8);
     symbol.setPen(QPen(c));
     symbol.setBrush(QBrush(c));
-#if QWT_VERSION < 0x060000
-    d_marker_peak_amplitude->setSymbol(symbol);
-#else
     d_marker_peak_amplitude->setSymbol(&symbol);
-#endif
 }
 const QColor FrequencyDisplayPlot::getMarkerPeakAmplitudeColor() const
 {

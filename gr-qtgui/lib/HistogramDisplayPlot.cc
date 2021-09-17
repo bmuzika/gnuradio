@@ -72,10 +72,6 @@ HistogramDisplayPlot::HistogramDisplayPlot(unsigned int nplots, QWidget* parent)
 {
     d_zoomer = new HistogramDisplayZoomer(canvas(), 0);
 
-#if QWT_VERSION < 0x060000
-    d_zoomer->setSelectionFlags(QwtPicker::RectSelection | QwtPicker::DragSelection);
-#endif
-
     d_zoomer->setMousePattern(
         QwtEventPattern::MouseSelect2, Qt::RightButton, Qt::ControlModifier);
     d_zoomer->setMousePattern(QwtEventPattern::MouseSelect3, Qt::RightButton);
@@ -118,13 +114,8 @@ HistogramDisplayPlot::HistogramDisplayPlot(unsigned int nplots, QWidget* parent)
         QwtSymbol* symbol = new QwtSymbol(
             QwtSymbol::NoSymbol, QBrush(colors[i]), QPen(colors[i]), QSize(7, 7));
 
-#if QWT_VERSION < 0x060000
-        d_plot_curve[i]->setRawData(d_xdata.data(), d_ydata[i].data(), d_bins);
-        d_plot_curve[i]->setSymbol(*symbol);
-#else
         d_plot_curve[i]->setRawSamples(d_xdata.data(), d_ydata[i].data(), d_bins);
         d_plot_curve[i]->setSymbol(symbol);
-#endif
     }
 
     _resetXAxisPoints(-1, 1);
@@ -315,17 +306,12 @@ void HistogramDisplayPlot::setMarkerAlpha(unsigned int which, int alpha)
         d_plot_curve[which]->setPen(pen);
 
         // And set the new color for the markers
-#if QWT_VERSION < 0x060000
-        QwtSymbol sym = (QwtSymbol)d_plot_curve[which]->symbol();
-        setLineMarker(which, sym.style());
-#else
         QwtSymbol* sym = (QwtSymbol*)d_plot_curve[which]->symbol();
         if (sym) {
             sym->setColor(color);
             sym->setPen(pen);
             d_plot_curve[which]->setSymbol(sym);
         }
-#endif
     }
 }
 
@@ -355,18 +341,12 @@ void HistogramDisplayPlot::setLineColor(unsigned int which, QColor color)
         pen.setColor(color);
         d_plot_curve[which]->setPen(pen);
 
-#if QWT_VERSION < 0x060000
-        d_plot_curve[which]->setPen(pen);
-        QwtSymbol sym = (QwtSymbol)d_plot_curve[which]->symbol();
-        setLineMarker(which, sym.style());
-#else
         QwtSymbol* sym = (QwtSymbol*)d_plot_curve[which]->symbol();
         if (sym) {
             sym->setColor(color);
             sym->setPen(pen);
             d_plot_curve[which]->setSymbol(sym);
         }
-#endif
     }
 }
 
@@ -381,11 +361,7 @@ void HistogramDisplayPlot::setNumBins(unsigned int bins)
         d_ydata[i].clear();
         d_ydata[i].resize(d_bins);
 
-#if QWT_VERSION < 0x060000
-        d_plot_curve[i]->setRawData(d_xdata.data(), d_ydata[i].data(), d_bins);
-#else
         d_plot_curve[i]->setRawSamples(d_xdata.data(), d_ydata[i].data(), d_bins);
-#endif
     }
 }
 

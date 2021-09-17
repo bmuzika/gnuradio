@@ -55,10 +55,6 @@ ConstellationDisplayPlot::ConstellationDisplayPlot(int nplots, QWidget* parent)
 
     d_zoomer = new ConstellationDisplayZoomer(canvas());
 
-#if QWT_VERSION < 0x060000
-    d_zoomer->setSelectionFlags(QwtPicker::RectSelection | QwtPicker::DragSelection);
-#endif
-
     d_zoomer->setMousePattern(
         QwtEventPattern::MouseSelect2, Qt::RightButton, Qt::ControlModifier);
     d_zoomer->setMousePattern(QwtEventPattern::MouseSelect3, Qt::RightButton);
@@ -98,15 +94,9 @@ ConstellationDisplayPlot::ConstellationDisplayPlot(int nplots, QWidget* parent)
         QwtSymbol* symbol = new QwtSymbol(
             QwtSymbol::NoSymbol, QBrush(colors[i]), QPen(colors[i]), QSize(7, 7));
 
-#if QWT_VERSION < 0x060000
-        d_plot_curve[i]->setRawData(
-            d_real_data[i].data(), d_imag_data[i].data(), d_numPoints);
-        d_plot_curve[i]->setSymbol(*symbol);
-#else
         d_plot_curve[i]->setRawSamples(
             d_real_data[i].data(), d_imag_data[i].data(), d_numPoints);
         d_plot_curve[i]->setSymbol(symbol);
-#endif
 
         setLineStyle(i, Qt::NoPen);
         setLineMarker(i, QwtSymbol::Ellipse);
@@ -160,13 +150,8 @@ void ConstellationDisplayPlot::plotNewData(const std::vector<double*> realDataPo
                     d_real_data[i].resize(d_numPoints);
                     d_imag_data[i].resize(d_numPoints);
 
-#if QWT_VERSION < 0x060000
-                    d_plot_curve[i]->setRawData(
-                        d_real_data[i].data(), d_imag_data[i].data(), d_numPoints);
-#else
                     d_plot_curve[i]->setRawSamples(
                         d_real_data[i].data(), d_imag_data[i].data(), d_numPoints);
-#endif
                 }
             }
 

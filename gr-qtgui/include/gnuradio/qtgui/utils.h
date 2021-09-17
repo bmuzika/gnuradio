@@ -46,12 +46,8 @@ public:
     QwtPickerDblClickPointMachine();
     ~QwtPickerDblClickPointMachine() override;
 
-#if QWT_VERSION < 0x060000
-    virtual CommandList
-#else
-    QList<QwtPickerMachine::Command>
-#endif
-    transition(const QwtEventPattern& eventPattern, const QEvent* e) override;
+    QList<QwtPickerMachine::Command> transition(const QwtEventPattern& eventPattern,
+                                                const QEvent* e) override;
 };
 
 QTGUI_API void check_set_qss(QApplication* app);

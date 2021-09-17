@@ -28,12 +28,10 @@
 #include <cstdio>
 #include <vector>
 
-#if QWT_VERSION >= 0x060000
 typedef QPointF QwtDoublePoint;
 typedef QRectF QwtDoubleRect;
 
 typedef QwtInterval QwtDoubleInterval;
-#endif
 
 typedef QList<QColor> QColorList;
 Q_DECLARE_METATYPE(QColorList)

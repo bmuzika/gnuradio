@@ -304,11 +304,7 @@ void NumberDisplayForm::setColor(unsigned int which, const QColor& min, const QC
     QwtLinearColorMap* map = new QwtLinearColorMap();
     map->setColorInterval(min, max);
 
-#if QWT_VERSION < 0x060000
-    d_indicator[which]->setFillColor(max);
-#else
     d_indicator[which]->setColorMap(map);
-#endif /* QWT_VERSION < 0x060000 */
 }
 
 void NumberDisplayForm::setColorMin(unsigned int which, QString min)
@@ -361,24 +357,16 @@ gr::qtgui::graph_t NumberDisplayForm::graphType() const { return d_graph_type; }
 
 QColor NumberDisplayForm::colorMin(unsigned int which) const
 {
-#if QWT_VERSION < 0x060000
-    return d_indicator[which]->fillColor();
-#else
     QwtLinearColorMap* map =
         static_cast<QwtLinearColorMap*>(d_indicator[which]->colorMap());
     return map->color1();
-#endif /* QWT_VERSION < 0x060000 */
 }
 
 QColor NumberDisplayForm::colorMax(unsigned int which) const
 {
-#if QWT_VERSION < 0x060000
-    return d_indicator[which]->fillColor();
-#else
     QwtLinearColorMap* map =
         static_cast<QwtLinearColorMap*>(d_indicator[which]->colorMap());
     return map->color2();
-#endif /* QWT_VERSION < 0x060000 */
 }
 
 std::string NumberDisplayForm::label(unsigned int which) const

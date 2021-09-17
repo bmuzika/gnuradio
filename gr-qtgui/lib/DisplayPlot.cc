@@ -26,17 +26,7 @@ DisplayPlot::DisplayPlot(int nplots, QWidget* parent)
     d_autoscale_state = false;
 
     // Disable polygon clipping
-#if QWT_VERSION < 0x060000
-    QwtPainter::setDeviceClipping(false);
-#else
     QwtPainter::setPolylineSplitting(false);
-#endif
-
-#if QWT_VERSION < 0x060000
-    // We don't need the cache here
-    canvas()->setPaintAttribute(QwtPlotCanvas::PaintCached, false);
-    canvas()->setPaintAttribute(QwtPlotCanvas::PaintPacked, false);
-#endif
 
     QColor default_palette_color = QColor("white");
     setPaletteColor(default_palette_color);
@@ -48,18 +38,11 @@ DisplayPlot::DisplayPlot(int nplots, QWidget* parent)
     // emit the position of clicks on widget
     d_picker = new QwtDblClickPlotPicker(canvas());
 
-#if QWT_VERSION < 0x060000
-    connect(d_picker,
-            SIGNAL(selected(const QwtDoublePoint&)),
-            this,
-            SLOT(onPickerPointSelected(const QwtDoublePoint&)));
-#else
     d_picker->setStateMachine(new QwtPickerDblClickPointMachine());
     connect(d_picker,
             SIGNAL(selected(const QPointF&)),
             this,
             SLOT(onPickerPointSelected6(const QPointF&)));
-#endif
 
     // Configure magnify on mouse wheel
     d_magnifier = new QwtPlotMagnifier(canvas());
@@ -142,19 +125,12 @@ void DisplayPlot::setLineColor(unsigned int which, QColor color)
         pen.setColor(color);
         d_plot_curve[which]->setPen(pen);
         // And set the color of the markers
-#if QWT_VERSION < 0x060000
-        // d_plot_curve[which]->setBrush(QBrush(QColor(color)));
-        d_plot_curve[which]->setPen(pen);
-        QwtSymbol sym = (QwtSymbol)d_plot_curve[which]->symbol();
-        setLineMarker(which, sym.style());
-#else
         QwtSymbol* sym = (QwtSymbol*)d_plot_curve[which]->symbol();
         if (sym) {
             sym->setColor(color);
             sym->setPen(pen);
             d_plot_curve[which]->setSymbol(sym);
         }
-#endif
     }
 }
 
@@ -275,17 +251,11 @@ void DisplayPlot::setLineWidth(unsigned int which, int width)
         d_plot_curve[which]->setPen(pen);
 
         // Scale the marker size proportionally
-#if QWT_VERSION < 0x060000
-        QwtSymbol sym = (QwtSymbol)d_plot_curve[which]->symbol();
-        sym.setSize(7 + 10 * log10(1.0 * width), 7 + 10 * log10(1.0 * width));
-        d_plot_curve[which]->setSymbol(sym);
-#else
         QwtSymbol* sym = (QwtSymbol*)d_plot_curve[which]->symbol();
         if (sym) {
             sym->setSize(7 + 10 * log10(1.0 * width), 7 + 10 * log10(1.0 * width));
             d_plot_curve[which]->setSymbol(sym);
         }
-#endif
     }
 }
 
@@ -319,34 +289,19 @@ const Qt::PenStyle DisplayPlot::getLineStyle(unsigned int which) const
 void DisplayPlot::setLineMarker(unsigned int which, QwtSymbol::Style marker)
 {
     if (which < d_nplots) {
-#if QWT_VERSION < 0x060000
-        QwtSymbol sym = (QwtSymbol)d_plot_curve[which]->symbol();
-        QPen pen(d_plot_curve[which]->pen());
-        QBrush brush(pen.color());
-        sym.setStyle(marker);
-        sym.setPen(pen);
-        sym.setBrush(brush);
-        d_plot_curve[which]->setSymbol(sym);
-#else
         QwtSymbol* sym = (QwtSymbol*)d_plot_curve[which]->symbol();
         if (sym) {
             sym->setStyle(marker);
             d_plot_curve[which]->setSymbol(sym);
         }
-#endif
     }
 }
 
 const QwtSymbol::Style DisplayPlot::getLineMarker(unsigned int which) const
 {
     if (which < d_nplots) {
-#if QWT_VERSION < 0x060000
-        QwtSymbol sym = (QwtSymbol)d_plot_curve[which]->symbol();
-        return sym.style();
-#else
         QwtSymbol* sym = (QwtSymbol*)d_plot_curve[which]->symbol();
         return sym->style();
-#endif
     } else {
         return QwtSymbol::NoSymbol;
     }
@@ -365,17 +320,12 @@ void DisplayPlot::setMarkerAlpha(unsigned int which, int alpha)
         d_plot_curve[which]->setPen(pen);
 
         // And set the new color for the markers
-#if QWT_VERSION < 0x060000
-        QwtSymbol sym = (QwtSymbol)d_plot_curve[which]->symbol();
-        setLineMarker(which, sym.style());
-#else
         QwtSymbol* sym = (QwtSymbol*)d_plot_curve[which]->symbol();
         if (sym) {
             sym->setColor(color);
             sym->setPen(pen);
             d_plot_curve[which]->setSymbol(sym);
         }
-#endif
     }
 }
 
